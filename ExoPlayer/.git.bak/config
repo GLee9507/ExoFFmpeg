@@ -1,0 +1,11 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/google/ExoPlayer.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "release-v2"]
+	remote = origin
+	merge = refs/heads/release-v2
