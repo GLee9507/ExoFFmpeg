@@ -32,9 +32,19 @@ LOCAL_SRC_FILES := android-libs/$(TARGET_ARCH_ABI)/$(LOCAL_MODULE).so
 include $(PREBUILT_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE    := libavformat
+LOCAL_SRC_FILES := android-libs/$(TARGET_ARCH_ABI)/$(LOCAL_MODULE).so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE    := libswresample
+LOCAL_SRC_FILES := android-libs/$(TARGET_ARCH_ABI)/$(LOCAL_MODULE).so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := ffmpeg
-LOCAL_SRC_FILES := $(LOCAL_PATH)/src/ffmpeg_jni.cc
+LOCAL_SRC_FILES := $(LOCAL_PATH)/src/FFmpegTest.c
 LOCAL_C_INCLUDES :=  $(LOCAL_PATH)/include
-LOCAL_SHARED_LIBRARIES := libavcodec libavresample libavutil
+LOCAL_SHARED_LIBRARIES := libavcodec libavresample libavutil libavformat libswresample
 LOCAL_LDLIBS := -Lffmpeg/android-libs/$(TARGET_ARCH_ABI) -llog
 include $(BUILD_SHARED_LIBRARY)

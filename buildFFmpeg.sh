@@ -20,12 +20,19 @@ COMMON_OPTIONS="\
     --disable-postproc \
     --disable-avfilter \
     --disable-symver \
-    --disable-swresample \
+    --enable-swresample \
     --enable-avresample \
     --enable-decoder=vorbis \
+    --enable-demuxer=vorbis \
     --enable-decoder=opus \
+    --enable-demuxer=opus \
     --enable-decoder=flac \
+    --enable-demuxer=flac \
     --enable-decoder=ape \
+    --enable-demuxer=ape \
+    --enable-decoder=mp3 \
+    --enable-demuxer=mp3 \
+    --enable-protocol=file \
     " && \
 cd "${FFMPEG_EXT_PATH}/jni" && \
 (git -C ffmpeg pull || git clone git://source.ffmpeg.org/ffmpeg ffmpeg) && \
