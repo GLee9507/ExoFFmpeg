@@ -1,4 +1,4 @@
 include ':app', ':exo-core', ':exo-ext-ffmpeg', ':exo-ext-flac'
-project(':exo-core').projectDir = new File('ExoPlayer/library/core')
-project(':exo-ext-ffmpeg').projectDir = new File('ExoPlayer/extensions/ffmpeg')
-project(':exo-ext-flac').projectDir = new File('ExoPlayer/extensions/flac')
+project(':exo-core').projectDir = new File('./ExoPlayer/library/core')
+project(':exo-ext-ffmpeg').projectDir = new File('./ExoPlayer/extensions/ffmpeg')
+project(':exo-ext-flac').projectDir = new File('./ExoPlayer/extensions/flac')

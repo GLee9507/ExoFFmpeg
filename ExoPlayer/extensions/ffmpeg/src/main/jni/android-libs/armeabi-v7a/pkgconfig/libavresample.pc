@@ -1,0 +1,14 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=../android-libs/armeabi-v7a
+includedir=../include
+
+Name: libavresample
+Description: Libav audio resampling library
+Version: 4.0.0
+Requires: 
+Requires.private: libavutil >= 56.19.101
+Conflicts:
+Libs: -L${libdir}  -lavresample 
+Libs.private: -lm
+Cflags: -I${includedir}

@@ -1,0 +1,14 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=../android-libs/armeabi-v7a
+includedir=../include
+
+Name: libavutil
+Description: FFmpeg utility library
+Version: 56.19.101
+Requires: 
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavutil 
+Libs.private: -pthread -lm
+Cflags: -I${includedir}
