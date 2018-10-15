@@ -28,7 +28,8 @@ android {
         consumerProguardFiles 'proguard-rules.txt'
 
         ndk {
-            abiFilters "armeabi-v7a"  // 指定要ndk需要兼容的架构(这样其他依赖包里mips,x86,armeabi,arm-v8之类的so会被过滤掉)
+            abiFilters "armeabi-v7a", "x86"
+            // 指定要ndk需要兼容的架构(这样其他依赖包里mips,x86,armeabi,arm-v8之类的so会被过滤掉)
         }
     }
 
@@ -36,9 +37,9 @@ android {
         jniLibs.srcDir 'src/main/libs'
         jni.srcDirs = ['src/main/jni'] // Disable the automatic ndk-build call by Android Studio.
     }
-    externalNativeBuild{
-        ndkBuild{
-            path  "src/main/jni/Android.mk"
+    externalNativeBuild {
+        ndkBuild {
+            path "src/main/jni/Android.mk"
         }
     }
 }
