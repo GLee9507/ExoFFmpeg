@@ -7,7 +7,7 @@ Name: libavcodec
 Description: FFmpeg codec library
 Version: 58.33.100
 Requires: 
-Requires.private: libswresample >= 3.2.100, libavutil >= 56.19.101
+Requires.private: libavutil >= 56.19.101
 Conflicts:
 Libs: -L${libdir}  -lavcodec 
 Libs.private: -pthread -lm
