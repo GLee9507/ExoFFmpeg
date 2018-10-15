@@ -12,7 +12,7 @@
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, LOG_TAG, \
                    __VA_ARGS__))
 #define MAX_AUDIO_FRAME_SIZE (48000 * 4)
-
+char *error;
 JNIEXPORT void JNICALL Java_com_google_android_exoplayer2_ext_ffmpeg_FFmpegTest_play
         (JNIEnv *env, jclass type, jstring input_jstr, jobject callback) {
 
@@ -30,7 +30,7 @@ JNIEXPORT void JNICALL Java_com_google_android_exoplayer2_ext_ffmpeg_FFmpegTest_
     //打开音频文件
     int open = avformat_open_input(&pFormatCtx, input_cstr, NULL, NULL);
     if (open != 0) {
-        char *error = malloc(64);
+        error = malloc(64);
         av_make_error_string(error, 64, open);
         LOGI("%s", "无法打开音频文件");
         return;
@@ -97,6 +97,8 @@ JNIEXPORT void JNICALL Java_com_google_android_exoplayer2_ext_ffmpeg_FFmpegTest_
             //解码
             ret = avcodec_decode_audio4(codecCtx, frame, &got_frame, packet);
             if (ret < 0) {
+                error = malloc(64);
+                av_make_error_string(error,64,ret);
                 break;
             }
             //解码一帧成功
@@ -135,6 +137,6 @@ JNIEXPORT void JNICALL Java_com_google_android_exoplayer2_ext_ffmpeg_FFmpegTest_
     avcodec_close(codecCtx);
     avformat_close_input(&pFormatCtx);
 
-    (*env)->ReleaseStringUTFChars(env, input_jstr, input_cstr);
+//    (*env)->ReleaseStringUTFChars(env, input_jstr, input_cstr);
 
 }

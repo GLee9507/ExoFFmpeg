@@ -17,4 +17,4 @@
 APP_OPTIM := debug
 APP_STL := gnustl_static
 APP_CPPFLAGS := -frtti
-APP_PLATFORM := android-16
+APP_PLATFORM := android-19
