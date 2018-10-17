@@ -14,4 +14,5 @@
      limitations under the License.
 -->
 
-<manifest package="com.google.android.exoplayer2.ext.flac"/>
+<manifest package="com.google.android.exoplayer2.ext.flac"
+    xmlns:android="http://schemas.android.com/apk/res/android"></manifest>

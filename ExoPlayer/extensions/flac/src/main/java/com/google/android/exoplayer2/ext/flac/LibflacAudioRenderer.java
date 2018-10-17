@@ -23,10 +23,11 @@ import com.google.android.exoplayer2.audio.AudioRendererEventListener;
 import com.google.android.exoplayer2.audio.SimpleDecoderAudioRenderer;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.ExoMediaCrypto;
+import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.MimeTypes;
 
 /**
- * Decodes and renders audio using the native Flac decoder.
+ * 7
  */
 public class LibflacAudioRenderer extends SimpleDecoderAudioRenderer {
 
@@ -45,11 +46,14 @@ public class LibflacAudioRenderer extends SimpleDecoderAudioRenderer {
   public LibflacAudioRenderer(Handler eventHandler, AudioRendererEventListener eventListener,
       AudioProcessor... audioProcessors) {
     super(eventHandler, eventListener, audioProcessors);
+    Log.d("glee9507","LibflacAudioRenderer init");
   }
 
   @Override
   protected int supportsFormatInternal(DrmSessionManager<ExoMediaCrypto> drmSessionManager,
       Format format) {
+    Log.d("glee9507","LibflacAudioRenderer supportsFormatInternal");
+
     if (!FlacLibrary.isAvailable()
         || !MimeTypes.AUDIO_FLAC.equalsIgnoreCase(format.sampleMimeType)) {
       return FORMAT_UNSUPPORTED_TYPE;
@@ -65,6 +69,8 @@ public class LibflacAudioRenderer extends SimpleDecoderAudioRenderer {
   @Override
   protected FlacDecoder createDecoder(Format format, ExoMediaCrypto mediaCrypto)
       throws FlacDecoderException {
+    Log.d("glee9507","LibflacAudioRenderer createDecoder");
+
     return new FlacDecoder(
         NUM_BUFFERS, NUM_BUFFERS, format.maxInputSize, format.initializationData);
   }

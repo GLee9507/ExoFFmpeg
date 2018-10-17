@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 cd "./ExoPlayer"
 EXOPLAYER_ROOT="$(pwd)"
-
+echo "$EXOPLAYER_ROOT"
 FFMPEG_EXT_PATH="${EXOPLAYER_ROOT}/extensions/ffmpeg/src/main"
 
 #Manjaro

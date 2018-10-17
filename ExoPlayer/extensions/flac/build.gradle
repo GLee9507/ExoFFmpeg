@@ -44,7 +44,7 @@ dependencies {
 //    testImplementation project(modulePrefix + 'testutils-robolectric')
 }
 
-ext {
-    javadocTitle = 'FLAC extension'
-}
-apply from: '../../javadoc_library.gradle'
+//ext {
+//    javadocTitle = 'FLAC extension'
+//}
+//apply from: '../../javadoc_library.gradle'
