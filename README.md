@@ -94,9 +94,9 @@ make -j4 && make install-libs && \
 make clean
 ```
 
-## 3 Android中使用FFmpeg音频解码
+## 3 Android 中使用 FFmpeg 音频解码
 
-### 3.1 Java层
+### 3.1 Java 层
 
 ```java
 public class FFmpegTest {
@@ -123,7 +123,7 @@ public class FFmpegTest {
     }
 }
 ```
-### 3.2 Native层
+### 3.2 Native 层
 
 ```c
 JNIEXPORT void JNICALL Java_com_google_android_exoplayer2_ext_ffmpeg_FFmpegTest_play
@@ -281,3 +281,30 @@ new Thread(new Runnable() {
     }
 }).start();
 ```
+
+## 4 ExoPlayer FFmpeg 扩展
+
+### 4.1 ExoPlayer 播放音频流程概述
+```java
+//创建ExoPlayer对象
+SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context);
+
+//创建ExtractorMediaSource.Factory
+ExtractorMediaSource.Factory factory = new ExtractorMediaSource.Factory(
+        new DefaultDataSourceFactory(context,
+                Util.getUserAgent(context, context.getPackageName())
+        )
+        //设置提取器集合工厂
+).setExtractorsFactory(new AudioOnlyExtractorsFactory());
+
+//创建mediaSource
+ExtractorMediaSource mediaSource = factory.createMediaSource(Uri.parse(Environment.getExternalStorageDirectory().getPath() + "/Music/Kalimba.flac"));
+
+//准备完成后播放
+player.setPlayWhenReady(true);
+
+//准备
+player.prepare(mediaSource);
+```
+### 4.2 ExoPlayer 自定义 [Extractor](https://github.com/GLee9507/ExoFFmpeg/blob/d0fd6d0a4c76533d5f329a051c4ebc03a23bf165/ExoPlayer/library/core/src/main/java/com/google/android/exoplayer2/extractor/Extractor.java)
+

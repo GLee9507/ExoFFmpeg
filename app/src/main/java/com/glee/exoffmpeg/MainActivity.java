@@ -7,16 +7,10 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.glee.AudioOnlyRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ext.ffmpeg.FFmpegTest;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.Util;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,11 +36,31 @@ public class MainActivity extends AppCompatActivity {
 //                        });
 //            }
 //        }).start();
+//        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context);
+//        ExtractorMediaSource mediaSource = new ExtractorMediaSource.Factory(new DefaultDataSourceFactory(context,
+//                Util.getUserAgent(context, "yourApplicationName")))
+//                .createMediaSource(Uri.parse(Environment.getExternalStorageDirectory().getPath() + "/Music/Kalimba.flac"));
+//        player.setPlayWhenReady(true);
+//        player.prepare(mediaSource);
+        test();
+    }
+
+    void test() {
+        //创建ExoPlayer对象
         SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context);
-        ExtractorMediaSource mediaSource = new ExtractorMediaSource.Factory(new DefaultDataSourceFactory(context,
-                Util.getUserAgent(context, "yourApplicationName")))
-                .createMediaSource(Uri.parse(Environment.getExternalStorageDirectory().getPath() + "/Music/Kalimba.flac"));
+        //创建ExtractorMediaSource.Factory
+        ExtractorMediaSource.Factory factory = new ExtractorMediaSource.Factory(
+                new DefaultDataSourceFactory(context,
+                        Util.getUserAgent(context, context.getPackageName())
+                )
+                //设置提取器集合工厂
+        ).setExtractorsFactory(new AudioOnlyExtractorsFactory());
+
+        //创建mediaSource
+        ExtractorMediaSource mediaSource = factory.createMediaSource(Uri.parse(Environment.getExternalStorageDirectory().getPath() + "/Music/Kalimba.flac"));
+        //准备完成后播放
         player.setPlayWhenReady(true);
+        //准备
         player.prepare(mediaSource);
     }
 }

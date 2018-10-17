@@ -29,50 +29,50 @@ import com.google.android.exoplayer2.util.MimeTypes;
 /**
  * 7
  */
-public class LibflacAudioRenderer extends SimpleDecoderAudioRenderer {
-
-  private static final int NUM_BUFFERS = 16;
-
-  public LibflacAudioRenderer() {
-    this(null, null);
-  }
-
-  /**
-   * @param eventHandler A handler to use when delivering events to {@code eventListener}. May be
-   *     null if delivery of events is not required.
-   * @param eventListener A listener of events. May be null if delivery of events is not required.
-   * @param audioProcessors Optional {@link AudioProcessor}s that will process audio before output.
-   */
-  public LibflacAudioRenderer(Handler eventHandler, AudioRendererEventListener eventListener,
-      AudioProcessor... audioProcessors) {
-    super(eventHandler, eventListener, audioProcessors);
-    Log.d("glee9507","LibflacAudioRenderer init");
-  }
-
-  @Override
-  protected int supportsFormatInternal(DrmSessionManager<ExoMediaCrypto> drmSessionManager,
-      Format format) {
-    Log.d("glee9507","LibflacAudioRenderer supportsFormatInternal");
-
-    if (!FlacLibrary.isAvailable()
-        || !MimeTypes.AUDIO_FLAC.equalsIgnoreCase(format.sampleMimeType)) {
-      return FORMAT_UNSUPPORTED_TYPE;
-    } else if (!supportsOutputEncoding(C.ENCODING_PCM_16BIT)) {
-      return FORMAT_UNSUPPORTED_SUBTYPE;
-    } else if (!supportsFormatDrm(drmSessionManager, format.drmInitData)) {
-      return FORMAT_UNSUPPORTED_DRM;
-    } else {
-      return FORMAT_HANDLED;
-    }
-  }
-
-  @Override
-  protected FlacDecoder createDecoder(Format format, ExoMediaCrypto mediaCrypto)
-      throws FlacDecoderException {
-    Log.d("glee9507","LibflacAudioRenderer createDecoder");
-
-    return new FlacDecoder(
-        NUM_BUFFERS, NUM_BUFFERS, format.maxInputSize, format.initializationData);
-  }
+public class LibflacAudioRenderer{
+//
+//  private static final int NUM_BUFFERS = 16;
+//
+//  public LibflacAudioRenderer() {
+//    this(null, null);
+//  }
+//
+//  /**
+//   * @param eventHandler A handler to use when delivering events to {@code eventListener}. May be
+//   *     null if delivery of events is not required.
+//   * @param eventListener A listener of events. May be null if delivery of events is not required.
+//   * @param audioProcessors Optional {@link AudioProcessor}s that will process audio before output.
+//   */
+//  public LibflacAudioRenderer(Handler eventHandler, AudioRendererEventListener eventListener,
+//      AudioProcessor... audioProcessors) {
+//    super(eventHandler, eventListener, audioProcessors);
+//    Log.d("glee9507","LibflacAudioRenderer init");
+//  }
+//
+//  @Override
+//  protected int supportsFormatInternal(DrmSessionManager<ExoMediaCrypto> drmSessionManager,
+//      Format format) {
+//    Log.d("glee9507","LibflacAudioRenderer supportsFormatInternal");
+//
+//    if (!FlacLibrary.isAvailable()
+//        || !MimeTypes.AUDIO_FLAC.equalsIgnoreCase(format.sampleMimeType)) {
+//      return FORMAT_UNSUPPORTED_TYPE;
+//    } else if (!supportsOutputEncoding(C.ENCODING_PCM_16BIT)) {
+//      return FORMAT_UNSUPPORTED_SUBTYPE;
+//    } else if (!supportsFormatDrm(drmSessionManager, format.drmInitData)) {
+//      return FORMAT_UNSUPPORTED_DRM;
+//    } else {
+//      return FORMAT_HANDLED;
+//    }
+//  }
+//
+//  @Override
+//  protected FlacDecoder createDecoder(Format format, ExoMediaCrypto mediaCrypto)
+//      throws FlacDecoderException {
+//    Log.d("glee9507","LibflacAudioRenderer createDecoder");
+//
+//    return new FlacDecoder(
+//        NUM_BUFFERS, NUM_BUFFERS, format.maxInputSize, format.initializationData);
+//  }
 
 }
