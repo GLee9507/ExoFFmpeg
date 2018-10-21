@@ -405,10 +405,7 @@ public class ApeExtractor implements Extractor {
     }
 }
 ```
-APE读取器 [APEReader] 
-
-APE文件信息 [APEFileInfo]
- 
+d
 #### 4.2.1 自定义 ExtractorsFactory
 ```java
 public class AudioOnlyExtractorsFactory implements ExtractorsFactory {
