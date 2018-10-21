@@ -327,7 +327,7 @@ player.setPlayWhenReady(true);
 //准备
 player.prepare(mediaSource);
 ```
-<span id="jump">Hello World</span>
+<span id="jump"> </span>
 ### 4.2 ExoPlayer 自定义 [Extractor](https://github.com/GLee9507/ExoFFmpeg/blob/d0fd6d0a4c76533d5f329a051c4ebc03a23bf165/ExoPlayer/library/core/src/main/java/com/google/android/exoplayer2/extractor/Extractor.java)（APE格式）
 
 #### 4.2.1 实现 Extractor 接口
