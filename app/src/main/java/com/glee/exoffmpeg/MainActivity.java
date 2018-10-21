@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         ).setExtractorsFactory(new AudioOnlyExtractorsFactory());
 
         //创建mediaSource
-        ExtractorMediaSource mediaSource = factory.createMediaSource(Uri.parse(Environment.getExternalStorageDirectory().getPath() + "/Music/Kalimba.flac"));
+        ExtractorMediaSource mediaSource = factory.createMediaSource(Uri.parse(Environment.getExternalStorageDirectory().getPath() + "/Music/十年.ape"));
         //准备完成后播放
         player.setPlayWhenReady(true);
         //准备

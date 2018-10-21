@@ -3,7 +3,29 @@
 **FFmpeg**是一个完整的跨平台解决方案，用于录制，转换和流式传输音频和视频。
 
 
-[TOC]
+<!-- TOC -->
+
+- [FFmpeg音频处理简述](#ffmpeg音频处理简述)
+    - [1 FFmpeg Libraries](#1-ffmpeg-libraries)
+        - [1.1 libavutil](#11-libavutil)
+        - [1.2 libswscale](#12-libswscale)
+        - [1.3 libswresample](#13-libswresample)
+        - [1.4 libavcodec](#14-libavcodec)
+        - [1.5 libavformat](#15-libavformat)
+        - [1.6 libavdevice](#16-libavdevice)
+        - [1.7 libavfilter](#17-libavfilter)
+    - [2 FFmpeg编译](#2-ffmpeg编译)
+    - [3 Android 中使用 FFmpeg 音频解码](#3-android-中使用-ffmpeg-音频解码)
+        - [3.1 Java 层](#31-java-层)
+        - [3.2 Native 层](#32-native-层)
+        - [3.3 例](#33-例)
+    - [4 ExoPlayer FFmpeg 扩展](#4-exoplayer-ffmpeg-扩展)
+        - [4.1 ExoPlayer 播放音频流程概述](#41-exoplayer-播放音频流程概述)
+        - [4.2 <span id="extractor">ExoPlayer 自定义 </span>[Extractor](https://github.com/GLee9507/ExoFFmpeg/blob/d0fd6d0a4c76533d5f329a051c4ebc03a23bf165/ExoPlayer/library/core/src/main/java/com/google/android/exoplayer2/extractor/Extractor.java)（APE格式）](#42-span-idextractorexoplayer-自定义-spanextractorhttpsgithubcomglee9507exoffmpegblobd0fd6d0a4c76533d5f329a051c4ebc03a23bf165exoplayerlibrarycoresrcmainjavacomgoogleandroidexoplayer2extractorextractorjavaape格式)
+            - [4.2.1 实现 Extractor 接口](#421-实现-extractor-接口)
+            - [4.2.1 自定义 ExtractorsFactory](#421-自定义-extractorsfactory)
+
+<!-- /TOC -->
 
 ## 1 FFmpeg Libraries
 ### 1.1 libavutil
@@ -306,5 +328,148 @@ player.setPlayWhenReady(true);
 //准备
 player.prepare(mediaSource);
 ```
-### 4.2 ExoPlayer 自定义 [Extractor](https://github.com/GLee9507/ExoFFmpeg/blob/d0fd6d0a4c76533d5f329a051c4ebc03a23bf165/ExoPlayer/library/core/src/main/java/com/google/android/exoplayer2/extractor/Extractor.java)
 
+### 4.2 <span id="extractor">ExoPlayer 自定义 </span>[Extractor](https://github.com/GLee9507/ExoFFmpeg/blob/d0fd6d0a4c76533d5f329a051c4ebc03a23bf165/ExoPlayer/library/core/src/main/java/com/google/android/exoplayer2/extractor/Extractor.java)（APE格式）
+
+#### 4.2.1 实现 Extractor 接口
+```java
+public class ApeExtractor implements Extractor {
+    /**
+     * APE读取器
+     */
+    private APEReader apeReader;
+    /**
+     * APE解码器
+     */
+    private APEDecoder decoder;
+    /**
+     * APE文件信息
+     */
+    private APEFileInfo apeFileInfo;
+    /**
+     * 输出轨道
+     */
+    private TrackOutput track;
+
+    @Override
+    public boolean sniff(ExtractorInput input) throws IOException, InterruptedException {
+        return (apeReader = APEReader.sniff(new ExtractorInputWrapper(input))) != null;
+    }
+
+    @Override
+    public void init(ExtractorOutput output) {
+        track = output.track(0, TRACK_TYPE_AUDIO);
+        decoder = new APEDecoder(4096, 4096);
+    }
+
+    @Override
+    public int read(ExtractorInput input, PositionHolder seekPosition) throws IOException, InterruptedException {
+        readApeInfo();
+        //TODO 解码未实现
+        return 0;
+    }
+
+    private void readApeInfo() throws IOException, InterruptedException {
+        if (apeFileInfo != null) {
+            return;
+        }
+        apeFileInfo = apeReader.read();
+        track.format(Format.createAudioSampleFormat(
+                /* id= */ null,
+                MimeTypes.AUDIO_RAW,
+                /* codecs= */ null,
+                apeFileInfo.nAverageBitrate,
+                Format.NO_VALUE,
+                apeFileInfo.nChannels,
+                apeFileInfo.nSampleRate,
+                getPcmEncoding(apeFileInfo.nBitsPerSample),
+                /* encoderDelay= */ 0,
+                /* encoderPadding= */ 0,
+                /* initializationData= */ null,
+                /* drmInitData= */ null,
+                /* selectionFlags= */ 0,
+                /* language= */ null,
+                /* metadata= */ null)
+        );
+
+    }
+
+    @Override
+    public void seek(long position, long timeUs) {
+        //TODO
+    }
+
+    @Override
+    public void release() {
+        decoder.release();
+    }
+}
+```
+APE读取器 [APEReader] 
+
+APE文件信息 [APEFileInfo]
+ 
+#### 4.2.1 自定义 ExtractorsFactory
+```java
+public class AudioOnlyExtractorsFactory implements ExtractorsFactory {
+    private boolean constantBitrateSeekingEnabled;
+    private @AdtsExtractor.Flags
+    int adtsFlags;
+    private @AmrExtractor.Flags
+    int amrFlags;
+    private @Mp3Extractor.Flags
+    int mp3Flags;
+
+    public AudioOnlyExtractorsFactory() {}
+
+    public synchronized AudioOnlyExtractorsFactory setConstantBitrateSeekingEnabled(
+            boolean constantBitrateSeekingEnabled) {
+        this.constantBitrateSeekingEnabled = constantBitrateSeekingEnabled;
+        return this;
+    }
+
+    public synchronized AudioOnlyExtractorsFactory setAdtsExtractorFlags(
+            @AdtsExtractor.Flags int flags) {
+        this.adtsFlags = flags;
+        return this;
+    }
+
+    public synchronized AudioOnlyExtractorsFactory setAmrExtractorFlags(@AmrExtractor.Flags int flags) {
+        this.amrFlags = flags;
+        return this;
+    }
+
+    public synchronized AudioOnlyExtractorsFactory setMp3ExtractorFlags(@Mp3Extractor.Flags int flags) {
+        mp3Flags = flags;
+        return this;
+    }
+
+
+    @Override
+    public Extractor[] createExtractors() {
+        return new Extractor[]{
+                new Mp3Extractor(
+                        mp3Flags
+                                | (constantBitrateSeekingEnabled
+                                ? Mp3Extractor.FLAG_ENABLE_CONSTANT_BITRATE_SEEKING
+                                : 0)),
+                new FlacExtractor(),
+                new AdtsExtractor(
+                        /* firstStreamSampleTimestampUs= */ 0,
+                        adtsFlags
+                                | (constantBitrateSeekingEnabled
+                                ? AdtsExtractor.FLAG_ENABLE_CONSTANT_BITRATE_SEEKING
+                                : 0)),
+                new Ac3Extractor(),
+                new OggExtractor(),
+                new WavExtractor(),
+                new AmrExtractor(
+                        amrFlags
+                                | (constantBitrateSeekingEnabled
+                                ? AmrExtractor.FLAG_ENABLE_CONSTANT_BITRATE_SEEKING
+                                : 0)),
+                new ApeExtractor()
+        };
+    }
+}
+```

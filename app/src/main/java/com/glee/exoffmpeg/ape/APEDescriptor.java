@@ -3,7 +3,6 @@ package com.glee.exoffmpeg.ape;
 
 import com.glee.exoffmpeg.util.ExtractorInputWrapper;
 
-import java.io.EOFException;
 import java.io.IOException;
 
 /**
@@ -28,17 +27,18 @@ public class APEDescriptor {
     public final static int APE_DESCRIPTOR_BYTES = 52;
 
     public static APEDescriptor read(final ExtractorInputWrapper input) throws IOException, InterruptedException {
+        input.resetPeekPosition();
         APEDescriptor header = new APEDescriptor();
-        header.cID = input.readString(4, "US-ASCII");
-        header.nVersion = input.readUnsignedShort();
-        input.skip(2);
-        header.nDescriptorBytes = input.readUnsignedInt();
-        header.nHeaderBytes = input.readUnsignedInt();
-        header.nSeekTableBytes = input.readUnsignedInt();
-        header.nHeaderDataBytes = input.readUnsignedInt();
-        header.nAPEFrameDataBytes = input.readUnsignedInt();
-        header.nAPEFrameDataBytesHigh = input.readUnsignedInt();
-        header.nTerminatingDataBytes = input.readUnsignedInt();
+        header.cID = input.peekString(4, "US-ASCII");
+        header.nVersion = input.peekUnsignedShort();
+        input.advancePeekPosition(2);
+        header.nDescriptorBytes = input.peekUnsignedInt();
+        header.nHeaderBytes = input.peekUnsignedInt();
+        header.nSeekTableBytes = input.peekUnsignedInt();
+        header.nHeaderDataBytes = input.peekUnsignedInt();
+        header.nAPEFrameDataBytes = input.peekUnsignedInt();
+        header.nAPEFrameDataBytesHigh = input.peekUnsignedInt();
+        header.nTerminatingDataBytes = input.peekUnsignedInt();
         input.peekFully(header.cFileMD5, 0, 16);
         return header;
     }

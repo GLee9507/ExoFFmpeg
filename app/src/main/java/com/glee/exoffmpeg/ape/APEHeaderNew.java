@@ -25,14 +25,14 @@ public class APEHeaderNew {
 
     public static APEHeaderNew read(final ExtractorInputWrapper input) throws IOException, InterruptedException {
         APEHeaderNew header = new APEHeaderNew();
-        header.nCompressionLevel = input.readUnsignedShort();
-        header.nFormatFlags = input.readUnsignedShort();
-        header.nBlocksPerFrame = input.readUnsignedInt();
-        header.nFinalFrameBlocks = input.readUnsignedInt();
-        header.nTotalFrames = input.readUnsignedInt();
-        header.nBitsPerSample = input.readUnsignedShort();
-        header.nChannels = input.readUnsignedShort();
-        header.nSampleRate = input.readUnsignedInt();
+        header.nCompressionLevel = input.peekUnsignedShort();
+        header.nFormatFlags = input.peekUnsignedShort();
+        header.nBlocksPerFrame = input.peekUnsignedInt();
+        header.nFinalFrameBlocks = input.peekUnsignedInt();
+        header.nTotalFrames = input.peekUnsignedInt();
+        header.nBitsPerSample = input.peekUnsignedShort();
+        header.nChannels = input.peekUnsignedShort();
+        header.nSampleRate = input.peekUnsignedInt();
         return header;
     }
 

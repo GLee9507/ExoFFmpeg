@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 /**
  * @author liji
  * @date 10/16/2018 3:54 PM
- * description
+ * description Extractor包装类，实现read
  */
 
 
@@ -22,28 +22,28 @@ public class ExtractorInputWrapper implements ExtractorInput {
         this.input = input;
     }
 
-    public String readString(int size, String encoding) throws IOException, InterruptedException {
+    public String peekString(int size, String encoding) throws IOException, InterruptedException {
         Charset c;
         if (TextUtils.isEmpty(encoding))
             c = Charset.defaultCharset();
         else
             c = Charset.forName(encoding);
         byte[] bytes = new byte[size];
-        peekFully(bytes, 0, 1);
+        peekFully(bytes, 0, size);
         return new String(bytes, 0, size, c);
     }
 
-    public short readUnsignedByte() throws IOException, InterruptedException {
+    public short peekUnsignedByte() throws IOException, InterruptedException {
         peekFully(bytes, 0, 1);
         return (short) (bytes[0] & 0xff);
     }
 
-    public int readUnsignedShort() throws IOException, InterruptedException {
+    public int peekUnsignedShort() throws IOException, InterruptedException {
         peekFully(bytes, 0, 2);
         return (bytes[0] & 0xff) | ((bytes[1] & 0xff) << 8);
     }
 
-    public long readUnsignedInt() throws IOException, InterruptedException {
+    public long peekUnsignedInt() throws IOException, InterruptedException {
         peekFully(bytes, 0, 4);
         return ((long) (bytes[0] & 0xff)) |
                 (((long) (bytes[1] & 0xff)) << 8) |
@@ -51,18 +51,18 @@ public class ExtractorInputWrapper implements ExtractorInput {
                 (((long) (bytes[3] & 0xff)) << 24);
     }
 
-    public byte readByte() throws IOException, InterruptedException {
+    public byte peekByte() throws IOException, InterruptedException {
         peekFully(bytes, 0, 1);
         return bytes[0];
     }
 
-    public short readShort() throws IOException, InterruptedException {
+    public short peekShort() throws IOException, InterruptedException {
 //        byte[] bytes = new byte[2];
         peekFully(bytes, 0, 2);
         return (short) ((bytes[0] & 0xff) | ((bytes[1] & 0xff) << 8));
     }
 
-    public int readInt() throws IOException, InterruptedException {
+    public int peekInt() throws IOException, InterruptedException {
 //        byte[] bytes = new byte[4];
         peekFully(bytes, 0, 4);
         return (int) (((long) ((bytes)[0] & 0xff)) |
@@ -71,7 +71,7 @@ public class ExtractorInputWrapper implements ExtractorInput {
                 (((long) (bytes[3] & 0xff)) << 24));
     }
 
-    public long readLong() throws IOException, InterruptedException {
+    public long peekLong() throws IOException, InterruptedException {
         peekFully(bytes, 0, 8);
         return ((long) (bytes[0] & 0xff)) |
                 (((long) (bytes[1] & 0xff)) << 8) |

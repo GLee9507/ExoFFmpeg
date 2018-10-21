@@ -24,17 +24,18 @@ public class APEHeaderOld {
     public final static int APE_HEADER_OLD_BYTES = 32;
 
     public static APEHeaderOld read(final ExtractorInputWrapper input) throws IOException, InterruptedException {
+        input.resetPeekPosition();
         APEHeaderOld header = new APEHeaderOld();
-        header.cID = input.readString(4, "US-ASCII");
-        header.nVersion = input.readUnsignedShort();
-        header.nCompressionLevel = input.readUnsignedShort();
-        header.nFormatFlags = input.readUnsignedShort();
-        header.nChannels = input.readUnsignedShort();
-        header.nSampleRate = input.readUnsignedInt();
-        header.nHeaderBytes = input.readUnsignedInt();
-        header.nTerminatingBytes = input.readUnsignedInt();
-        header.nTotalFrames = input.readUnsignedInt();
-        header.nFinalFrameBlocks = input.readUnsignedInt();
+        header.cID = input.peekString(4, "US-ASCII");
+        header.nVersion = input.peekUnsignedShort();
+        header.nCompressionLevel = input.peekUnsignedShort();
+        header.nFormatFlags = input.peekUnsignedShort();
+        header.nChannels = input.peekUnsignedShort();
+        header.nSampleRate = input.peekUnsignedInt();
+        header.nHeaderBytes = input.peekUnsignedInt();
+        header.nTerminatingBytes = input.peekUnsignedInt();
+        header.nTotalFrames = input.peekUnsignedInt();
+        header.nFinalFrameBlocks = input.peekUnsignedInt();
         return header;
     }
 }
