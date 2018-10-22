@@ -114,7 +114,6 @@ make -j4 && make install-libs && \
 
 make clean
 ```
-
 ## 3 Android 中使用 FFmpeg 音频解码
 
 ### 3.1 Java 层
