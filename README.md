@@ -84,7 +84,7 @@ COMMON_OPTIONS="\
     --enable-protocol=file \
     " && \
 cd "${FFMPEG_EXT_PATH}/jni" && \
-
+(git -C ffmpeg pull || git clone git://source.ffmpeg.org/ffmpeg ffmpeg) && \
 cd ffmpeg && \
 ./configure \
     --libdir=../android-libs/armeabi-v7a \
@@ -409,7 +409,14 @@ public class ApeExtractor implements Extractor {
 }
 ```
 [APEReader](https://github.com/GLee9507/ExoFFmpeg/blob/c9760d6c01d62ec5fbaec5337ceb0250f50a4239/app/src/main/java/com/glee/exoffmpeg/ape/APEReader.java)
+
 [APEFileInfo](https://github.com/GLee9507/ExoFFmpeg/blob/c9760d6c01d62ec5fbaec5337ceb0250f50a4239/app/src/main/java/com/glee/exoffmpeg/ape/APEFileInfo.java)
+
+[APEHeaderNew](https://github.com/GLee9507/ExoFFmpeg/blob/58ba6eb585df0ab1f30654408af76e4706e2c9b4/app/src/main/java/com/glee/exoffmpeg/ape/APEHeaderOld.java)
+
+[APEHeaderOld](https://github.com/GLee9507/ExoFFmpeg/blob/58ba6eb585df0ab1f30654408af76e4706e2c9b4/app/src/main/java/com/glee/exoffmpeg/ape/APEHeaderOld.java)
+
+[ExtractorInputWrapper（装饰模式）](https://github.com/GLee9507/ExoFFmpeg/blob/58ba6eb585df0ab1f30654408af76e4706e2c9b4/app/src/main/java/com/glee/exoffmpeg/util/ExtractorInputWrapper.java)
 #### 4.2.1 自定义 ExtractorsFactory
 ```java
 public class AudioOnlyExtractorsFactory implements ExtractorsFactory {
