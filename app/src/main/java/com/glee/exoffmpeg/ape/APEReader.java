@@ -109,11 +109,11 @@ public class APEReader {
             m_APEFileInfo.spSeekByteTable[i] = (int) input.peekUnsignedInt(); //TODO 未实现
 
             // get the wave header
-            if ((APEHeader.nFormatFlags & MAC_FORMAT_FLAG_CREATE_WAV_HEADER) <= 0) {
-                if (m_APEFileInfo.nWAVHeaderBytes > Integer.MAX_VALUE)
-                    m_APEFileInfo.spWaveHeaderData = new byte[m_APEFileInfo.nWAVHeaderBytes];
-                input.peekFully(m_APEFileInfo.spWaveHeaderData, 0, 44);
-            }
+//            if ((APEHeader.nFormatFlags & MAC_FORMAT_FLAG_CREATE_WAV_HEADER) <= 0) {
+//                if (m_APEFileInfo.nWAVHeaderBytes > Integer.MAX_VALUE)
+//                    m_APEFileInfo.spWaveHeaderData = new byte[m_APEFileInfo.nWAVHeaderBytes];
+//                input.peekFully(m_APEFileInfo.spWaveHeaderData, 0, m_APEFileInfo.spWaveHeaderData.length);
+//            }
     }
 
     protected void readOld(APEFileInfo m_APEFileInfo) throws IOException, InterruptedException {

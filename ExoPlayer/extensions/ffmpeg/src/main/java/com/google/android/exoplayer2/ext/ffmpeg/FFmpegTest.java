@@ -3,7 +3,7 @@ package com.google.android.exoplayer2.ext.ffmpeg;
 public class FFmpegTest {
     static {
         //加载so库
-        System.loadLibrary("ffmpeg");
+        System.loadLibrary("fftest");
     }
 
     /**

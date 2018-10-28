@@ -35,7 +35,7 @@ JNIEXPORT void JNICALL Java_com_google_android_exoplayer2_ext_ffmpeg_FFmpegTest_
     //申请AVFormatContext内存空间
     AVFormatContext *pFormatCtx = avformat_alloc_context();
     //打开音频文件，并且初始化AVFormatContext
-    int open = avformat_open_input(&pFormatCtx, 8, NULL, NULL);
+    int open = avformat_open_input(&pFormatCtx, input_cstr, NULL, NULL);
     if (open != 0) {
         logError(open);
         return;

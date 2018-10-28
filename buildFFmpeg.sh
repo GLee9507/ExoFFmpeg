@@ -50,7 +50,7 @@ cd ffmpeg && \
     --extra-ldexeflags=-pie \
     ${COMMON_OPTIONS} \
     && \
-#make -j4 && make install && \
+make -j4 && make install && \
 
 make clean && ./configure \
     --libdir=../android-libs/x86 \
