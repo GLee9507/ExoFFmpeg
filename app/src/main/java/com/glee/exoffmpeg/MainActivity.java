@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.glee.exoffmpeg.ape.APEDecoderJni;
 import com.glee.exoffmpeg.ape.AudioOnlyExtractorsFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -24,14 +25,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
 //        test();
-        new Thread(() -> {
-            //在子线程中执行
-            FFmpegTest.play(
-                    //音乐文件路径
-                    Environment.getExternalStorageDirectory().getPath() + "/Music/Kalimba.ape",
-                    //解码后的数据回调
-                    pcm -> Log.d("glee", pcm.length + ""));
-        }).start();
+//        new Thread(() -> {
+//            //在子线程中执行
+//            FFmpegTest.play(
+//                    //音乐文件路径
+//                    Environment.getExternalStorageDirectory().getPath() + "/Music/Kalimba.ape",
+//                    //解码后的数据回调
+//                    pcm -> Log.d("glee", pcm.length + ""));
+//        }).start();
 //        SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context);
 //        ExtractorMediaSource mediaSource = new ExtractorMediaSource.Factory(new DefaultDataSourceFactory(context,
 //                Util.getUserAgent(context, "yourApplicationName")))
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
 //        player.setPlayWhenReady(true);
 //        player.prepare(mediaSource);
 //        test();
+        APEDecoderJni sniff = APEDecoderJni.sniff("/sdcard/Music/Kalimba.ape");
+        Log.d("glee9507", sniff==null?"null":sniff + "");
+//        APEDecoderJni.sniff();
     }
 
     void test() {

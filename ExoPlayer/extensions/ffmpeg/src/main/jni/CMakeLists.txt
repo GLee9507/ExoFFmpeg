@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 add_library( # Sets the name of the library.
-        fftest
+        ape_decoder
         # Sets the library as a shared library.
         SHARED
         # Provides a relative path to your source file(s).
-        ${CMAKE_SOURCE_DIR}/src/FFmpegTestDecode.c )
+        ${CMAKE_SOURCE_DIR}/src/ape_decoder.c )
 
 find_library( # Sets the name of the path variable.
         log-lib
@@ -44,12 +44,12 @@ set_target_properties(
 )
 
 target_link_libraries( # Specifies the target library.
-        fftest
+        ape_decoder
         # Links the target library to the log library
         # included in the NDK.
         libavutil
+#        libswresample
         libavcodec
         libavformat
-        libswresample
         ${log-lib} )
 

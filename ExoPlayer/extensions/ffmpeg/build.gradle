@@ -28,8 +28,16 @@ android {
         consumerProguardFiles 'proguard-rules.txt'
 
         ndk {
-            abiFilters "armeabi-v7a"
+//            abiFilters "armeabi-v7a"
+            abiFilters "x86"
             // 指定要ndk需要兼容的架构(这样其他依赖包里mips,x86,armeabi,arm-v8之类的so会被过滤掉)
+        }
+        externalNativeBuild {
+            cmake {
+                arguments '-DANDROID_STL=c++_static',
+                        '-DANDROID_ARM_NEON=TRUE',
+                        '-DANDROID_NATIVE_API_LEVEL=19'
+            }
         }
     }
 
@@ -43,7 +51,6 @@ android {
 //        }
         cmake {
             path "src/main/jni/CMakeLists.txt"
-//            arguments '-DANDROID_PLATFORM=android-19',
 //                    '-DANDROID_TOOLCHAIN=clang'
             // explicitly build libs
 //            targets 'gmath', 'gperf'
