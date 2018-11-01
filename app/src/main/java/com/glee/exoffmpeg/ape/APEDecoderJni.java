@@ -1,5 +1,7 @@
 package com.glee.exoffmpeg.ape;
 
+import android.view.Surface;
+
 /**
  * @author liji
  * @date 11/1/2018 3:06 PM
@@ -12,12 +14,14 @@ public class APEDecoderJni {
         System.loadLibrary("ape_decoder");
     }
 
-    private long pDecoder;
+    private long pCodec;
+    private long pCodecCtx;
     private long pFormatCtx;
     private int streamIndex;
 
-    public APEDecoderJni(long pDecoder, long pFormatCtx, int streamIndex) {
-        this.pDecoder = pDecoder;
+    private APEDecoderJni(long pCodec, long pCodecCtx, long pFormatCtx, int streamIndex) {
+        this.pCodec = pCodec;
+        this.pCodecCtx = pCodecCtx;
         this.streamIndex = streamIndex;
         this.pFormatCtx = pFormatCtx;
     }

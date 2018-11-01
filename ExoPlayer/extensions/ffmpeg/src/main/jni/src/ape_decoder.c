@@ -6,38 +6,52 @@
 
 
 jobject sniff(JNIEnv *env, jclass clazz, jstring j_str) {
-    LOGE("0");
     jboolean copy = 0;
-    LOGE("1");
     const char *c_str = (*env)->GetStringUTFChars(env, j_str, &copy);
-    LOGE("2");
-
     int ret = -1;
-    LOGE("3");
+    LOGE("0");
     AVFormatContext *pFormatCtx = avformat_alloc_context();
     AVCodec *pCodec = NULL;
-    LOGE("4");
+    AVCodecContext *pCodecCtx = NULL;
+    LOGE("1");
     ret = avformat_open_input(&pFormatCtx, c_str, NULL, NULL);
-    if (ret)
+    if (ret != 0) {
+        logError(ret);
         return NULL;
-    LOGE("5");
+    }
+    LOGE("2");
     ret = avformat_find_stream_info(pFormatCtx, NULL);
-    if (ret)
+    if (ret != 0) {
+        logError(ret);
         return NULL;
-    LOGE("6");
+    }
+    LOGE("3");
     int streamIndex = av_find_best_stream(pFormatCtx, AVMEDIA_TYPE_AUDIO, -1, -1, &pCodec, 0);
-    LOGE("7");
-    jmethodID mid = (*env)->GetMethodID(env, clazz, "<init>", "(JJI)V");
-    LOGE("8");
-    jobject object = (*env)->NewObject(env, clazz, mid, (int64_t) pCodec, (int64_t) pFormatCtx,
-                                       streamIndex);
-    LOGE("9");
+    if (!pCodec) {
+        return NULL;
+    }
+    LOGE("4");
+    pCodecCtx = avcodec_alloc_context3(pCodec);
+    if (!pCodecCtx) {
+        return NULL;
+    }
+    LOGE("%64d",pCodecCtx);
     avformat_close_input(&pFormatCtx);
-    return object;
+    LOGE("6");
+    (*env)->ReleaseStringUTFChars(env, j_str, c_str);
+    LOGE("7");
+    (*env)->DeleteLocalRef(env, j_str);
+    LOGE("8");
+    return (*env)->NewObject(env, clazz, initID,
+            (jlong)(intptr_t) pCodec,
+            (jlong)(intptr_t)pCodecCtx,
+            (jlong)(intptr_t)pFormatCtx,
+            (jlong)(intptr_t)streamIndex);
 }
 
 void release(JNIEnv *env, jobject object) {
-    AVFormatContext *formatContext = (AVFormatContext *) (*env)->GetLongField(env, object, pFormatCtxID);
-    avformat_free_context(formatContext);
-    (*env)->DeleteGlobalRef(env, object);
+    avformat_free_context((AVFormatContext *) (*env)->GetLongField(env, object, pFormatCtxID));
+    AVCodecContext *pCodecCtx = (AVCodecContext *) (*env)->GetLongField(env, object, pCodecCtxID);
+    avcodec_free_context(&pCodecCtx);
+    (*env)->DeleteLocalRef(env, object);
 }

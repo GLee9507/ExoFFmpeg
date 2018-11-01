@@ -1,10 +1,14 @@
 package com.glee.exoffmpeg;
 
+import android.Manifest;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -40,9 +44,27 @@ public class MainActivity extends AppCompatActivity {
 //        player.setPlayWhenReady(true);
 //        player.prepare(mediaSource);
 //        test();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
+        }
         APEDecoderJni sniff = APEDecoderJni.sniff("/sdcard/Music/Kalimba.ape");
         Log.d("glee9507", sniff==null?"null":sniff + "");
+        if (sniff != null) {
+            sniff.release();
+        }
 //        APEDecoderJni.sniff();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==1) {
+//            APEDecoderJni sniff = APEDecoderJni.sniff("/sdcard/Music/Kalimba.ape");
+//            Log.d("glee9507", sniff==null?"null":sniff + "");
+//            if (sniff != null) {
+//                sniff.release();
+//            }
+        }
     }
 
     void test() {

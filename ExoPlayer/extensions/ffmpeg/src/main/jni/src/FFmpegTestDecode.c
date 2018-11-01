@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_com_google_android_exoplayer2_ext_ffmpeg_FFmpegTest_
 
     //回调方法的id
     error = malloc(64);
-    jmethodID callMID = (*env)->GetMethodID(env,
+    jmethodID callMID = (*env)->GetMethodID(env,`
                                             (*env)->GetObjectClass(env, callback),
                                             "pcm",
                                             "([B)V");
